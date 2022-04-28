@@ -1,0 +1,36 @@
+version: "3.8"
+
+networks:
+  pttp:
+
+volumes:
+  database:
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    networks:
+      - pttp
+    ports:
+      - 4040:4040
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12-alpine
+    env_file:
+      - .env
+    networks:
+      pttp:
+        aliases:
+          - postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - type: volume
+        source: database
+        target: /var/lib/postgresql/data
