@@ -52,7 +52,7 @@ const socketEvents = () => {
           const messages = await MessageService.getMessages(
             data.conversationId
           );
-          io.sockets.in(data.conversationId).emit('get_messages', messages);
+          io.sockets.in(data.conversationId).emitw('get_messages', messages);
         } catch (err) {
           socket.emit('socket_error', err?.message);
         }
